@@ -1,0 +1,439 @@
+@import url('https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@300&display=swap');
+
+html, body{
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  background-color: black;
+}
+.txt {
+color: white;
+  font-size: 5vw;
+  font-family: 'Smooch Sans', sans-serif;
+tex-align: center;
+}
+.btns {
+  flex: 1;
+  background-color: #000000;
+  border: solid;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 5vw;
+  border-radius: 10000px;
+  height: 100%;
+  width: 96%;
+  font-family: 'Smooch Sans', sans-serif;
+  margin: 2%;
+}
+.btns:hover{
+background-color: white;
+  color: black;
+}
+
+
+/* STARTING SCREEN */
+
+.TS {
+  flex: 1;
+}
+.Title {
+  color: white;
+  font-family: 'Smooch Sans', sans-serif;
+  font-size: 15vw;
+  text-align: center;
+}
+#SZ {
+  display: flex;
+  flex-direction: row;
+}
+#Sbtns {
+  flex: 16;
+}
+.SC {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  margin: 2%;
+}
+.SIC {
+  flex: 1;
+  margin: 2%;
+}
+.IC {
+  height: 100%;
+  width: 100%;
+}
+#Starting {
+  display: none;
+}
+
+/* COMBAT DESICION SCREEN */
+
+#CombatDecision {
+  display: none;
+  opacity: 1;
+  transition: opacity 1s;
+}
+#CombatDecision.fade {
+  opacity: 0;
+}
+#CombatDecision.nofade {
+  opacity: 1;
+}
+#CDI {
+  display: flex;
+  flex-direction: column;
+  margin: 1%;
+}
+#CDT {
+  flex: 1;
+  display: flex;
+}
+#return {
+  flex: 1;
+  height: 60%;
+}
+#CTitle {
+  flex: 4;
+}
+#UCZ {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+}
+#TCbtns {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+#BCbtns {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+#FZ {
+  width: 100%;
+  height: 100%;
+}
+#LUZ {
+  width: 100%;
+  height: 100%;
+}
+#RZ {
+  width: 100%;
+   height: 100%;
+}
+#CRZ {
+   height: 92%;
+  width: 92%;
+  margin: 4%;
+  border: solid white;
+    color: white;
+  font-family: 'Smooch Sans', sans-serif;
+  font-size: 5vw;
+  text-align: center;
+}
+#CRTZ {
+  height: 90%;
+  width: 100%;
+  text-align: center;
+}
+.CIC {
+  display: block;
+  height: 35%;
+  width: 35%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.green {
+  color: #32bd00;
+  font-family: 'Smooch Sans', sans-serif;
+  font-size: 3vw;
+}
+
+/* DUNGEON FLOOR SCREEN */
+#DFSN {
+  display: none;
+}
+#DFtitleB {
+  display: flex;
+  flex-direction: row;
+}
+#Floors {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+#Floors {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+#floors {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+.image {
+  flex: 1;
+}
+#Flimage {
+  height: 100%;
+  width: 100%;
+}
+#flbtns {
+  flex: 4;
+  margin: 2%;
+}
+#Ebtn {
+  margin: 5%;
+}
+.DFT {
+  color: #ffffff;
+  font-family: 'Smooch Sans', sans-serif;
+  font-size: 5vw;
+  margin: 2%;
+}
+#Enterfl {
+  display: none;
+}
+#flbtns {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.divclass {
+  display: flex;
+  width: 100%;
+}
+#DFT {
+  display: none;
+  color: #ffffff;
+  font-family: 'Smooch Sans', sans-serif;
+  font-size: 5vw;
+  margin: 2%;
+}
+
+
+
+/* FIGHT SCREEN */
+#CFS{
+  display: none;
+}
+#CFSI {
+  height: 100%;
+  width: 100%;
+  diplay: flex;
+}
+#bars {
+  display: flex;
+  margin: 3%;
+  height: 94%;
+  width: 94%;
+  align-items: center;
+}
+#RightSide{
+  flex: 10;
+  height: 100%;
+  width: 100%;
+}
+#Icon{
+  flex: 3;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+#CFSIC {
+  height: 100%;
+  width: 100%;
+}
+#LeftSide{
+  flex: 10;
+  height: 100%;
+  width: 100%;
+}
+#LeftTopSide {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2%;
+  margin-right: -12%;
+  border-style: solid;
+  border-color: white;
+  border-radius: 5px;
+}
+#EmptyHP {
+  padding-left: 25%;
+  padding-top: 8%;
+  background-color: #545454;
+  float: left;
+  position: relative;
+}
+#HP {
+  padding-left: 75%;
+  padding-top: 8%;
+  background-color: #770909;
+  float: right;
+  position: relative;
+}
+#hide {
+  
+  display: none;
+}
+#HP:hover + p {
+  display: block;
+  color: white;
+  font-size: 10vw;
+  text-align: center;
+}
+#LeftBottomSide {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2%;
+  margin-right: -12%;
+  border-style: solid;
+  border-color: white;
+  border-radius: 5px;
+}
+#EmptyEXP {
+  padding-left: 75%;
+  padding-top: 8%;
+  background-color: #545454;
+  float: left;
+  position: relative;
+}
+#EXP {
+  padding-left: 25%;
+  padding-top: 8%;
+  background-color: #9060d7;
+  float: right;
+  position: relative;
+}
+#RightTopSide {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2%;
+  margin-left: -12%;
+  border-style: solid;
+  border-color: white;
+  border-radius: 5px;
+}
+#EmptyStamina {
+  padding-right: 0%;
+  padding-top: 8%;
+  background-color: #545454;
+  float: right;
+  position: relative;
+}
+#Stamina {
+  padding-right: 100%;
+  padding-top: 8%;
+  background-color: #cea840;
+  float: left;
+  position: relative;
+}
+#RightBottomSide {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2%;
+  margin-left: -12%;
+  border-style: solid;
+  border-color: white;
+  border-radius: 5px;
+}
+#EmptyMP {
+  padding-right: 3%;
+  padding-top: 8%;
+  background-color: #545454;
+  float: right;
+  position: relative;
+}
+#MP {
+  padding-right: 97%;
+  padding-top: 8%;
+  background-color: #096477;
+  float: left;
+  position: relative;
+}
+#CFbtns {
+  flex: 1;
+  height: 92%;
+  width: 92%;
+  margin: 4%;
+  display:flex;
+  flex-direction: row;
+}
+.CFBtns {
+  height: 100%;
+  width: 100%;
+}
+.Fbtns {
+  flex: 2;
+  background-color: #000000;
+  border: solid;
+  color: white;
+  padding: 15px 32px;
+  font-size: 3vw;
+  border-radius: 10000px;
+  height: 96%;
+  width: 96%;
+  font-family: 'Smooch Sans', sans-serif;
+  margin: 2%;
+}
+.Fbtns:hover{
+background-color: white;
+  color: black;
+}
+#Fight {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#Graphics {
+  min-height: 200px;
+  height: 94%;
+  width: 94%;
+  margin: 3%;
+  flex: 4;
+  border: solid white;
+}
+
+/* Rest Screen */
+#RS {
+  display: none;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s;
+}
+#RS.fadein {
+  opacity: 1;
+}
+
+/* Inventory Screen */
+#InventorySc {
+  display: none;
+}
+#IT {
+  display: flex;
+}
+#ITitle {
+  flex: 3;
+}
+
+/* Stats Screen */
+#StatsSc {
+  display: none;
+}
+#StatT {
+  display: flex;
+}
+#StatTitle {
+  flex: 3;
+}

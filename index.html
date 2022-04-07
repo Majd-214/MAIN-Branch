@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>replit</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body onload="Starting()">
+    
+  <!-- Starting Screen -->
+  <div id="Starting">
+    <div class="Title"> 
+    C L I C K E R - R P G
+    </div>
+    <div id="SZ">
+      <div id="Sbtns">
+    <div class="TS" id="Inventory">
+      <button class="btns" onclick="Inventory(true)"> I N V E N T O R Y </button>
+    </div>
+    <div class="TS" id="Combat">
+      <button class="btns" onclick="Combat()"> C O M B A T </button>
+    </div>
+    <div class="TS" id="Store">
+      <button class="btns"> S T O R E </button>
+    </div>
+    <div class="TS" id="Stats">
+      <button class="btns" onclick="StatsSc()"> S T A T S </button>
+    </div>
+      </div>
+      <div class="SC">
+        <div class="SIC">
+          <img class="IC" src="Icons/InvC.png">
+        </div>
+        <div class="SIC"></div>
+        <div class="SIC">
+        <img class="IC" src="Icons/StoC.png">
+        </div>
+        <div class="SIC"></div>
+      </div>
+      <div class="SC">
+        <div class="SIC"></div>
+        <div class="SIC">
+          <img class="IC" src="Icons/ComC.png">
+        </div>
+        <div class="SIC"></div>
+        <div class="SIC">
+          <img class="IC" src="Icons/StaC.png">
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Combat Decision Screen -->
+<div id="CombatDecision">
+  <div id="CDI">
+<div id="CDT">
+  <div id="return">
+    <button class="btns" onclick="Return()"> RETURN </button>
+  </div>
+  <div id="CTitle" class="Title"> C O M B A T</div>
+</div>
+<div id="UCZ">
+  <div id="TCbtns">
+  <div id="FZ">
+    <img class="CIC" src="Icons/FC.png">
+    <button class="btns" onclick="DungeonF()"> F I G H T </button>
+  </div>
+  <div id="LUZ">
+   <img class="CIC" src="Icons/LUC.png">
+    <button class="btns"> LEVEL UP </button>
+  </div>
+  </div>
+  <div id="BCbtns">
+  <div id="RZ">
+    <img class="CIC" src="Icons/RC.png">
+    <button class="btns" onclick="Rest()"> R E S T </button>
+  </div>
+  <div id="CRZ">
+C O M B A T - R E P O R T
+    <div id="CRTZ">
+      <p class="green"> 
+        You win!
+      <br>
+        +35 exp!
+        <br>
+        +14 Coins!
+      </p>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+  </div>
+    
+<!-- Dungeon Floor Screen -->
+    <div id="DFSN">
+      <div id="DFS">
+        <div id="DFtitleB">
+        <div id="return">
+    <button class="btns" onclick="ReturnCD()"> RETURN </button>
+  </div>
+        <div id="DFTitle" class="Title"> DUNGEON FLOOR </div> 
+        </div>
+        <div id="Floors">
+<div id="floors">
+    <div id="flbtns"> </div>
+  </div>
+      </div>
+        <div id="Enterfl">
+           <div id="DFT"></div>
+          <div id="Ebtn">
+          <button class="btns" onclick="Fight()"> Enter </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+<!-- Combat Fighting Screen -->
+<div id="CFS">
+  <div id="CFSI">
+    <div id="bars">
+    <div id="LeftSide">
+      <div id="LeftTopSide">
+        <div id="EmptyHP"></div>
+        <div id="HP"> </div>
+      </div>
+      <div id="LeftBottomSide">
+        <div id="EmptyEXP"> </div>
+        <div id="EXP"> </div>
+      </div>
+    </div>
+    <div id="Icon">
+      <img id="CFSIC" src="Icons/CFSI.png">
+    </div>
+    <div id=RightSide>
+      <div id="RightTopSide">
+        <div id="Stamina"> </div>
+        <div id="EmptyStamina"> </div>
+      </div>
+      <div id="RightBottomSide">
+        <div id="MP"> </div>
+        <div id="EmptyMP"> </div>
+      </div>
+    </div>
+  </div>
+    <div id="Fight">
+      <div id="Graphics"> 
+        <div id="test"></div>
+      </div>
+      <div id="CFbtns">
+        <div class="CFBtns">
+          <button class="Fbtns" onclick="preAction()"> A T T A C K </button>
+        </div>
+        <div class="CFBtns">
+          <button class="Fbtns" onclick="Inventory(false)"> INVENTORY </button>
+        </div>
+        <div class="CFBtns">
+          <button class="Fbtns" onclick=""> S P E L L S </button>
+        </div>
+      </div>
+      </div>
+        </div>
+      </div>
+    
+<!--  Rest Screen -->
+<div id="RS" onclick="RSFadeout()">
+  <div class="Rest" id="rest.">
+    <div class="txt">You Sleep Peacefully For Some Time, <br>
+    Waking Up Fully Healed</div>
+  </div>
+  <div class="Rest" id="rest?">
+    <div></div>
+  </div>
+</div>
+    
+<!-- Inventory Screen -->
+<div id="InventorySc">
+    <div id="II">
+      <div id="IT">
+        <div id="return">
+          <button class="btns" onclick="invReturn()"> RETURN </button>
+        </div>
+        <div id="ITitle" class="Title"> INVENTORY </div>
+      </div>
+      <div id="InventoryPage">
+      </div>
+    </div>
+  </div>
+    
+<!-- Stats Screen -->
+<div id="StatsSc">
+    <div id="StatI">
+      <div id="StatT">
+        <div id="return">
+          <button class="btns" onclick="Return()"> RETURN </button>
+        </div>
+        <div id="StatTitle" class="Title"> S T A T  S : </div>
+      </div>
+      <div id="StatsPage">
+      </div>
+    </div>
+  </div>
+    
+<!-- Screen -->
+    
+    <script src="script.js"></script>
+  </body>
+</html>
