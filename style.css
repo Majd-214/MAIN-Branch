@@ -437,3 +437,20 @@ background-color: white;
 #StatTitle {
   flex: 3;
 }
+.Txt {
+color: white;
+  font-size: 3vw;
+  font-family: 'Smooch Sans', sans-serif;
+text-align: center;
+}
+#StatsPage {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+}
+.StatColumns {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

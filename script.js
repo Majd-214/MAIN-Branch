@@ -1,25 +1,7 @@
 //--GLOBAL VARIABLES---------------------------------------------
 let invVar = true;
-//Crit
-let mobDmg;
-let critDamagePost = 0;
-
-// HP
-
-// - BLANK - 
-let inventoryContent;
-
-// SKILLS
-  //Maybe use a class to keep track of skills(?)
-let strength = 0;
-let constitution = 0;
-let wisdom = 0;
-let intelligence = 0;
-let luck = 1;
 
 // LEVEL
-let expGained = 0;
-let exp = 0;
 let level = 1;
 let levelPoints = 1;
 let maxXp = 100;
@@ -113,6 +95,56 @@ class user {
   rest() {
     player.hp = player.maxHp;
   }
+  lootGained() {
+    mobIn.lootGained = new Array();
+    if (!mobIn.dead) {
+      for (let x = 0; x < mobIn.loot.length; x++) {
+        if ((mobIn.lootChance() < mobIn.loot[x][1]) && (mobIn.loot[x][1] != null)) {
+            mobIn.lootGained.push(mobIn.loot[x][0]);
+          }
+      }
+      console.log(mobIn.lootGained);
+      this.runInventory();
+    }
+  }
+  runInventory() {
+    if (mobIn.lootGained == null) return; 
+      mobIn.lootGained.forEach((loot, index) => {
+        console.log("index: " + index);
+        console.log("loot: " + loot);
+        const itembtns =     document.getElementById("itembtns");
+    
+        const div = document.createElement("div");
+        const btn = document.createElement("button");
+        const image = document.createElement("img");
+    
+        // Set up the image
+        image.src = "/Icons/InvC";
+        image.style.width = "20%";
+        image.style.height = "100%";
+    
+        // Set up the button
+        btn.innerHTML = mobIn.lootGained[index];
+        btn.className = "btns";
+        btn.style.flex = 1;
+    
+        btn.onclick = function click() {
+          console.log(flr + " button clicked!");
+          currentFloor = index + 1;
+          console.log("Current Floor: " + currentFloor);
+          Enter();
+        };
+  
+      // Set up the div
+  
+      div.className = "divclass";
+  
+      div.appendChild(image);
+      div.appendChild(btn);
+  
+      flbtns.appendChild(div);
+    });
+  }
 }
 
 class floor {
@@ -140,6 +172,7 @@ class mob {
     this.effectC=effectC;
     this.spDmg=spDmg;
     this.dead = false;
+    this.lootGained;
   }
   turn() {
   let ai = Math.random() * 100;
@@ -169,63 +202,13 @@ class mob {
       console.log('YOU WIN!');
       player.exp = (player.exp + this.exp)
       player.checkExp();
-      this.lootGained();
+      player.lootGained();
       this.dead = true;
       this.reset();
     }
   }
    lootChance() {
     return Math.random() * 100;
-  }
-  lootGained() {
-    let lootGained = new Array();
-    if (!this.dead) {
-      for (let x = 0; x < this.loot.length; x++) {
-        if ((this.lootChance() < this.loot[x][1]) && (this.loot[x][1] != null)) {
-            lootGained.push(this.loot[x][0]);
-          }
-      }
-      console.log(lootGained);
-      player.runInventory();
-    }
-  }
-  runInventory() {
-    if (lootGained == null) return; 
-    lootGained.forEach((loot, index) => {
-      console.log("index: " + index);
-      console.log("loot: " + loot);
-      const itembtns = document.getElementById("itembtns");
-  
-      const div = document.createElement("div");
-      const btn = document.createElement("button");
-      const image = document.createElement("img");
-  
-      // Set up the image
-      image.src = "/Icons/InvC";
-      image.style.width = "20%";
-      image.style.height = "100%";
-  
-      // Set up the button
-      btn.innerHTML = items[index];
-      btn.className = "btns";
-      btn.style.flex = 1;
-  
-      btn.onclick = function click() {
-        console.log(flr + " button clicked!");
-        currentFloor = index + 1;
-        console.log("Current Floor: " + currentFloor);
-        Enter();
-      };
-  
-      // Set up the div
-  
-      div.className = "divclass";
-  
-      div.appendChild(image);
-      div.appendChild(btn);
-  
-      flbtns.appendChild(div);
-    });
   }
   //Check for effect on (status true) weapon
   applyPoison() {
@@ -453,7 +436,7 @@ function attack() {
   mobIn.hp = (mobIn.hp - damage);
   console.log('DEBUG MOB-HP:',mobIn.hp)
   mobIn.checkHp();
-  let mobHpPost = mobIn.hp; //Stores mob hp post damage
+  mobIn.mobHpPost = mobIn.hp; //Stores mob hp post damage
   // mobIn.checkDamageDiff();
   if (mobIn.hp > 0) mobIn.turn();
   
