@@ -79,13 +79,10 @@
   <div id="CRZ">
 C O M B A T - R E P O R T
     <div id="CRTZ">
-      <p class="green"> 
-        You win!
-      <br>
-        +35 exp!
-        <br>
-        +14 Coins!
-      </p>
+      <p id="comRep" class="green"></p>
+      <p id="comRep1" class="green"></p>
+       <p id="comRep2" class="green"></p>
+      <p id="comRep3" class="green"></p>
     </div>
   </div>
   </div>
@@ -117,7 +114,7 @@ C O M B A T - R E P O R T
     </div>
     
 <!-- Combat Fighting Screen -->
-<div id="CFS">
+ <div id="CFS">
   <div id="CFSI">
     <div id="bars">
     <div id="LeftSide">
@@ -146,25 +143,71 @@ C O M B A T - R E P O R T
   </div>
     <div id="Fight">
       <div id="Graphics"> 
-        <div id="test"></div>
+        <div id="EHPBar">
+        <div id="EmptyEHP"> </div>
+          <div id="EHP"> </div>
+      </div>
+      </div>
       </div>
       <div id="CFbtns">
         <div class="CFBtns">
-          <button class="Fbtns" onclick="preAction()"> A T T A C K </button>
+          <button class="Fbtns" onclick="Attackpg()"> A T T A C K </button>
         </div>
         <div class="CFBtns">
-          <button class="Fbtns" onclick="Inventory(false)"> INVENTORY </button>
+          <button class="Fbtns" onclick="Inventory(false)"> CHARACTER </button>
         </div>
         <div class="CFBtns">
-          <button class="Fbtns" onclick=""> S P E L L S </button>
+          <button class="Fbtns" onclick=""> R U N </button>
         </div>
       </div>
+    <div id="Attackbtns">
+      <div class="Backbtn">
+          <button class="Backbtns" onclick="Backpg()"> < </button>
+        </div>
+      <div class="CFBtns">
+          <button class="Fbtns" onclick="basicAttack()"> B A S I C </button>
+        </div>
+        <div class="CFBtns">
+          <button class="Fbtns" onclick="Magicpg()"> M A G I C </button>
+        </div>
+        <div class="CFBtns">
+          <button class="Fbtns" onclick="Skillpg()"> S K I L L </button>
+        </div>
+    </div>
+    <div id="Magicbtns">
+      <div class="Backbtn">
+          <button class="Backbtns" onclick="Backpg1()"> < </button>
+        </div>
+      <div class="CFBtns">
+          <button class="Fbtns" onclick=""> FIREBALL </button>
+        </div>
+        <div class="CFBtns">
+          <button class="Fbtns" onclick=""> SMITE </button>
+        </div>
+        <div class="CFBtns">
+          <button class="Fbtns" onclick=""> LESSER HEAL </button>
+        </div>
+    </div>
+    <div id="Skillbtns">
+      <div class="Backbtn">
+          <button class="Backbtns" onclick="Backpg1()"> < </button>
+        </div>
+      <div class="CFBtns">
+          <button class="Fbtns" onclick=""> EXECUTE  </button>
+        </div>
+        <div class="CFBtns">
+          <button class="Fbtns" onclick=""> BASH </button>
+        </div>
+        <div class="CFBtns">
+          <button class="Fbtns" onclick=""> FURY </button>
+        </div>
+    </div>
       </div>
         </div>
       </div>
     
 <!--  Rest Screen -->
-<div id="RS" onclick="RSFadeout()">
+<div id="RS">
   <div class="Rest" id="rest.">
     <div class="txt">You Sleep Peacefully For Some Time, <br>
     Waking Up Fully Healed</div>
@@ -221,6 +264,38 @@ C O M B A T - R E P O R T
 </div>
     
 <!-- Screen -->
+    <div id="LVLSc">
+    <div id="LVLI">
+      <div id="LVLT">
+        <div id="return">
+          <button class="btns" onclick="Return()"> RETURN </button>
+        </div>
+        <div id="LVLTitle" class="Title"> LEVEL UP </div>
+      </div>
+      <div id="LVLPage">
+        <div class="LVLColumns">
+        <div></div>
+        <div></div>
+        <div></div>
+        </div>
+        <div class="LVLUpColumns">
+        <div></div>
+        <div></div>
+        <div></div>
+        </div>
+        <div class="LVLColumns">
+        <div></div>
+        <div></div>
+        <div></div>
+        </div>
+        <div class="LVLUpColumns">
+        <div></div>
+        <div></div>
+        <div></div>
+        </div>
+        </div>
+    </div>
+  </div>
     
     <script src="script.js"></script>
   </body>

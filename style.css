@@ -151,6 +151,7 @@ background-color: white;
   color: #32bd00;
   font-family: 'Smooch Sans', sans-serif;
   font-size: 3vw;
+  margin: 0;
 }
 
 /* DUNGEON FLOOR SCREEN */
@@ -221,12 +222,10 @@ background-color: white;
 
 
 /* FIGHT SCREEN */
-#CFS{
+#CFS {
   display: none;
 }
 #CFSI {
-  height: 100%;
-  width: 100%;
   diplay: flex;
 }
 #bars {
@@ -268,21 +267,20 @@ background-color: white;
   border-radius: 5px;
 }
 #EmptyHP {
-  padding-left: 25%;
+  padding-left: 0%;
   padding-top: 8%;
   background-color: #545454;
   float: left;
   position: relative;
 }
 #HP {
-  padding-left: 75%;
+  padding-left: 100%;
   padding-top: 8%;
-  background-color: #770909;
+  background-color: #ae3232;
   float: right;
   position: relative;
 }
 #hide {
-  
   display: none;
 }
 #HP:hover + p {
@@ -301,14 +299,14 @@ background-color: white;
   border-radius: 5px;
 }
 #EmptyEXP {
-  padding-left: 75%;
+  padding-left: 100%;
   padding-top: 8%;
   background-color: #545454;
   float: left;
   position: relative;
 }
 #EXP {
-  padding-left: 25%;
+  padding-left: 0%;
   padding-top: 8%;
   background-color: #9060d7;
   float: right;
@@ -347,14 +345,14 @@ background-color: white;
   border-radius: 5px;
 }
 #EmptyMP {
-  padding-right: 3%;
+  padding-right: 0%;
   padding-top: 8%;
   background-color: #545454;
   float: right;
   position: relative;
 }
 #MP {
-  padding-right: 97%;
+  padding-right: 100%;
   padding-top: 8%;
   background-color: #096477;
   float: left;
@@ -364,7 +362,8 @@ background-color: white;
   flex: 1;
   height: 92%;
   width: 92%;
-  margin: 4%;
+  margin-left: 4%;
+  margin-right: 4%;
   display:flex;
   flex-direction: row;
 }
@@ -383,9 +382,27 @@ background-color: white;
   height: 96%;
   width: 96%;
   font-family: 'Smooch Sans', sans-serif;
-  margin: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 .Fbtns:hover{
+background-color: white;
+  color: black;
+}
+.Backbtns {
+  flex: 2;
+  background-color: #000000;
+  border: solid;
+  color: white;
+  font-size: 3vw;
+  border-radius: 10000px;
+  height: 96%;
+  width: 96%;
+  font-family: 'Smooch Sans', sans-serif;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.Backbtns:hover{
 background-color: white;
   color: black;
 }
@@ -396,12 +413,54 @@ background-color: white;
   flex-direction: column;
 }
 #Graphics {
-  min-height: 200px;
   height: 94%;
   width: 94%;
   margin: 3%;
   flex: 4;
   border: solid white;
+}
+#EHPBar {
+  float: right;
+  width: 94%;
+  display: flex;
+  flex-direction: row;
+  margin: 1%;
+  border-style: solid;
+  border-color: white;
+  border-radius: 5px;
+  margin-bottom: 30%;
+}
+#EmptyEHP {
+  padding-left: 0%;
+  padding-top: 2%;
+  background-color: #545454;
+  float: left;
+  position: relative;
+}
+#EHP {
+  padding-left: 100%;
+  padding-top: 2%;
+  background-color: #6e0c0c;
+  float: right;
+  position: relative;
+}
+#Attackbtns {
+  display: flex;
+  flex-directions: row;
+  margin-left: 4%;
+  margin-right: 4%;
+}
+#Magicbtns {
+  display: flex;
+  flex-directions: row;
+  margin-left: 4%;
+  margin-right: 4%;
+}
+#Skillbtns {
+  display: flex;
+  flex-directions: row;
+  margin-left: 4%;
+  margin-right: 4%;
 }
 
 /* Rest Screen */
@@ -416,6 +475,7 @@ background-color: white;
   opacity: 1;
 }
 
+
 /* Inventory Screen */
 #InventorySc {
   display: none;
@@ -425,6 +485,9 @@ background-color: white;
 }
 #ITitle {
   flex: 3;
+}
+#Inventorypage {
+  flex-flow: row wrap;
 }
 
 /* Stats Screen */
@@ -453,4 +516,35 @@ text-align: center;
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+/* Lvl up screen */
+#LVLSc {
+  display: none;
+}
+#LVLT {
+  display: flex;
+}
+#LVLTitle {
+  flex: 3;
+}
+.Txt {
+color: white;
+  font-size: 3vw;
+  font-family: 'Smooch Sans', sans-serif;
+text-align: center;
+}
+#LVLPage {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+}
+.LVLColumns {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.loot {
+  color: white;
 }

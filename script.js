@@ -16,7 +16,9 @@ let playerPoison = 0;
 let burnDmg = 5;
 //Other globals
 let mobIn;
-let hpLv = ((level - 1) / 10 + 1)
+let hpLv = ((level - 1) / 10 + 1);
+let loot;
+//Skill notes: Strength, Dexterity, Constitution, Wisdom, Intelligence, Luck
 
 
 //CLASSES-------------------------------------------------------
@@ -26,16 +28,23 @@ class user {
     name, 
     hp, 
     maxHp,
+    stamina,
+    maxStamina,
+    mp,
+    maxMp,
     res,
     //Damage values
     dmg, 
     dmgMul,
     critMul,
+    critC,
     //level related values
     lv, 
     exp, 
     lvPoints,
     maxExp,
+    equiped,
+    loot
     //effects
     ) {
     this.name=name;
@@ -49,38 +58,46 @@ class user {
     this.exp=exp;
     this.lvPoints=lvPoints;
     this.maxExp=maxExp;
-
+    this.loot=new Array(loot);
+    this.equiped=new Array(equiped)
     this.dead=false;
     
   }
+  
   displayInfo() {
     return 'Name:_' + this.name + '_HP:_' + this.hp +'_DAMAGE:_' + this.dmg +   
     '_LEVEL:_' + this.lv + '_EXP:_' + this.exp + '/' + this.maxExp + '_RES:_' + this.res + '_POISON:_' + playerPoison + '_BURN:_' + playerBurn
     }
 
+  //element logic----------------------------
   applyBurn() {
     playerBurn = (mobIn.effectStr + playerBurnCounters);
   }
+  
   applyPoison() {
     playerPoison = (mobIn.effectStr + playerPoison); 
   }
+  
   takePoison() {
     if (playerPoison > 0) { 
       player.hp = (player.hp - playerPoison);
       playerPoison--;
     }
   }
+  
   takeBurn() {
     if (playerBurn > 0) {
       player.hp = (player.hp - burnDmg);
     playerBurn--;
     }
   }
+  //---------------------------------------
   checkHp(){
     if (player.hp <= 0) {
       console.log("YOU LOSE");
     }
   }
+  
   checkExp(){
     let maxExp;
     maxExp = ((player.lv / 10) +1) * player.maxExp;
@@ -92,57 +109,55 @@ class user {
       player.maxExp = maxExp; //Check globals for equation
     }
   }
-  rest() {
-    player.hp = player.maxHp;
-  }
-  lootGained() {
-    mobIn.lootGained = new Array();
-    if (!mobIn.dead) {
-      for (let x = 0; x < mobIn.loot.length; x++) {
-        if ((mobIn.lootChance() < mobIn.loot[x][1]) && (mobIn.loot[x][1] != null)) {
-            mobIn.lootGained.push(mobIn.loot[x][0]);
-          }
+
+  collectLoot() {
+    mobIn.lootGained.forEach((label, index) => {
+      if (mobIn.lootGained[index] != null && mobIn.lootGained[index] != undefined) {
+        this.loot.push(mobIn.lootGained[index]);
       }
-      console.log(mobIn.lootGained);
-      this.runInventory();
-    }
+    });
   }
-  runInventory() {
-    if (mobIn.lootGained == null) return; 
-      mobIn.lootGained.forEach((loot, index) => {
+
+  runInventory() { //inventory elements
+    const div = document.getElementById("InventoryPage");
+    if (this.loot == null) return; 
+      this.loot.forEach((lootIn, index) => {
         console.log("index: " + index);
-        console.log("loot: " + loot);
-        const itembtns =     document.getElementById("itembtns");
-    
-        const div = document.createElement("div");
+        console.log("loot: " + lootIn);
+        
+        const id = this.loot[index];
+        if (document.getElementById(id) != null) return;
+        
+        const itembtns = document.getElementById("itembtns");
         const btn = document.createElement("button");
         const image = document.createElement("img");
-    
+
+        btn.className = "btns";
+        image.className = "images";
+
+        btn.id = id;
+        
         // Set up the image
-        image.src = "/Icons/InvC";
+        image.src = "/Icons/InvC.png";
         image.style.width = "20%";
         image.style.height = "100%";
     
         // Set up the button
-        btn.innerHTML = mobIn.lootGained[index];
+        btn.innerHTML = id;
         btn.className = "btns";
         btn.style.flex = 1;
     
         btn.onclick = function click() {
-          console.log(flr + " button clicked!");
+          console.log(id + " button clicked!");
           currentFloor = index + 1;
           console.log("Current Floor: " + currentFloor);
           Enter();
         };
   
       // Set up the div
-  
-      div.className = "divclass";
-  
       div.appendChild(image);
       div.appendChild(btn);
-  
-      flbtns.appendChild(div);
+      // flbtns.appendChild(div);
     });
   }
 }
@@ -160,33 +175,58 @@ class floor {
 }
 
 class mob {
-  constructor(name, hp, maxHp, dmg, loot, exp, effect, effectStr, effectC, spDmg) {
+  constructor(name, hp, maxHp, dmg, loot, exp, effect, effectStr, effectC, spDmg, poison, burn) {
     this.name=name;
     this.hp=hp;
     this.maxHp=maxHp;
     this.dmg=dmg;
     this.loot=loot;
     this.exp=exp;
-    this.effect=effect;
-    this.effectStr=effectStr;
-    this.effectC=effectC;
-    this.spDmg=spDmg;
+    this.effect=effect; //Element applied on special attack
+    this.effectStr=effectStr; //Amount of counters for effect
+    this.effectC=effectC; //Chance to apply
+    this.spDmg=spDmg; //Damage from special attack
+    this.poison=poison; //Keeping track of poison counters on mob In
+    this.burn=burn; //Keeping track of burn counters on mob In
     this.dead = false;
     this.lootGained;
   }
+
+  displayStats() {
+    console.log(
+  
+    )
+  }
+  
   turn() {
-  let ai = Math.random() * 100;
-  if (ai < 10) {
-    player.hp = (player.hp - this.spDmg)
-    this.checkEffect();
-    console.log("DEBUG: MOB_SPECIAL")
-  } else {
-    player.hp = (player.hp - this.dmg)
-    console.log('DEBUG: MOB_ATTACK')
+    let ai = Math.random() * 100;
+    if (ai < 10) {
+      player.hp = (player.hp - this.spDmg)
+      this.checkEffect();
+      console.log("DEBUG: MOB_SPECIAL")
+    } else {
+      player.hp = (player.hp - this.dmg)
+      console.log('DEBUG: MOB_ATTACK')
+    }
+    console.log('DEBUG POST-DAMAGE', player.displayInfo());
+    updateBars();
+    player.checkHp();
+    preTurn();
   }
-  console.log('DEBUG POST-DAMAGE', player.displayInfo())
-  player.checkHp();
+  
+  dropLoot() {
+    this.lootGained = new Array();
+    if (!this.dead) {
+      for (let x = 0; x < this.loot.length; x++) {
+        if ((this.lootChance() < this.loot[x][1]) && (this.loot[x][1] != null)) {
+            this.lootGained.push(this.loot[x][0]);
+          }
+      }
+      console.log(this.lootGained);
+      player.runInventory();
+    }
   }
+  
   checkEffect() {
     if (this.effect == 'burn') {
       player.applyBurn();
@@ -194,6 +234,7 @@ class mob {
       player.applyPoison();
     }
   }
+  
   checkHp() {
     if (this.hp <= 0) {
  document.getElementById("CFS").style = "display: none";
@@ -202,29 +243,47 @@ class mob {
       console.log('YOU WIN!');
       player.exp = (player.exp + this.exp)
       player.checkExp();
-      player.lootGained();
-      this.dead = true;
+      this.dropLoot();
+      player.collectLoot();
+      mobIn.dead = true;
       this.reset();
     }
   }
-   lootChance() {
+  
+  lootChance() {
     return Math.random() * 100;
   }
-  //Check for effect on (status true) weapon
+  
+  // Check for effect on (status true) weapon
+  checkWeapon() {
+    if (player.equipped[0].effect = 'burn') applyBurn(); 
+    if (player.equipped[0].effect =   'poison') applyPoison();
+  }
   applyPoison() {
-    let mobPoison = (weapon.effect + mobPoison)
+    // let mobPoison = (player.equipped[0].effectStr + mobPoison)
   }
+  
   applyBurn() {
-    let mobBurn = (weapon.effect + mobBurn) 
+    // let mobBurn = (weapon.effectStr + mobBurn) 
   }
+  
   takePoison() {
-    
+    if (this.poison > 0) { 
+      this.hp = (this.hp - this.poison);
+      this.poison--;
+    }
   }
   takeBurn() {
-    
+    if (this.burn > 0) {
+      this.hp = (this.hp - burnDmg);
+      this.burn--;
+    }
   }
   reset() {
     this.hp=this.maxHp;
+    this.dead=false;
+    this.lootGained = null;
+    console.log('--DEBUG RESET!!!--')
   }
 //   checkDamageDiff() {
 //     let mobHpDiff = (mobHpPre - mobHpPost);
@@ -235,14 +294,16 @@ class mob {
 //   }
 }
 class melee {
-  constructor(name, dmg, effect, status) {
+  constructor(name, dmg, effect, effectStr, status ) {
     this.name=name;
     this.dmg=dmg;
     this.effect=effect;
+    this.effectStr=effectStr;
     this.status=status; 
     //equiped or not (true, false)
   }
 }
+
 class armor {
   constructor(name, res, effect, status) {
     this.name=name;
@@ -251,60 +312,60 @@ class armor {
     this.status=status;
   }
 }
+
 class skill{
-  constructor(name, sCost, mCost, effect, status) {
+  constructor(name, sCost, mCost, damage, effect, status) {
     this.name=name;
     this.sCost=sCost;
     this.mCost=mCost;
     this.effect=effect;
     this.status=status;
   }
+  
   checkEffect() {
   //   USE THIS FOR CHECK CONDITION
   //   if (this.effect != null)
   }
 }
+
 class rune {
   constructor(name, skill, damage, effect, status) {
     this.name=name;
     this.skill=skill;
   }
-  
 }
 //-----------------------------------------------------------------
 
 
 //melee weapons
-const woodClub = new melee('Wood club', 7.5, null, true);
+const woodClub = new melee('Wood club', 7.5, null, null, true);
 
-// VSCODE TRIAL Hello there buddi
+const rustySpike = new melee('Really rusty spike', 5, 'poison', 5, false);
 
-const rustySpike = new melee('REALLY rusty spike', 5, 'poison', false);
+const knife = new melee('Knife', 10, null, null, false);
 
-const knife = new melee('Knife', 10, 'none', false);
+const longSword = new melee('Long Sword', 20, null, null, false);
 
-const longSword = new melee('Long Sword', 20, null, false);
+const adminSword = new melee('God sword', 1000, null, null, false);
 
-const adminSword = new melee('God sword', 1000, null, false);
+const BFS = new melee('Big Friendly Sword', 25, null, null, false);
 
-const BFS = new melee('Big Friendly Sword', 25, null, false);
+const clawClamore = new melee("Claw Claymore", 30, null, null, false);
 
-const clawClamore = new melee("Claw Clamore", 30, null, false);
-
-const fireSword = new melee('Fire Sword', 20, 'burn', false);
+const fireSword = new melee('Fire Sword', 20, 'burn', 5, false);
 
 //ARMOR
 const leatherArmor = new armor('Leather Armor', 5, null, false);
 const chainmail = new armor('Chainmail', 10, null, false);
 const darkCoat = new armor('Dark Coat', 30, 'dark', false)
-
+  
 
 //---------------------------------------------
 //MOBS
   //theif
 const thief = new mob('Theif', 100 * hpLv, 100 * hpLv, 5, [
-  ['knife', 20],
-  ['mysterious Ring', 1.75],
+  ['Knife', 20],
+  ['Mysterious Ring', 1.75],
   ['Potion of BIG-ENING', 1.75],
 ], 5, null, null, 10, 10)
 
@@ -328,7 +389,7 @@ const fireSpirit = new mob('Fire Spirit', 50 * hpLv, 50 * hpLv, 15, [
   //GOBLIN
 const goblin = new mob('Goblin', 75 * hpLv, 75 * hpLv, 10, [
   ['Leather Armor', 10],
-  ['goblin ears', 100],
+  ['Goblin Ears', 100],
 ], 10, null, null, 10, 20);
 
 //BOSSES
@@ -339,8 +400,8 @@ const skeletonBoss = new mob('Skeleton King', 350 * hpLv, 350 * hpLv, 20, [
 ], 100, null, null, 10, 35);
 
 const crab = new mob('CRAB?', 1 * hpLv, 10 * hpLv, 1000, [
-  ['claw claymore', 1],
-  ['expensive food', 1],
+  ['Claw Claymore', 1],
+  ['Expensive Food', 1],
 ]);
 //----------------------------------------------
 //RUNES
@@ -351,7 +412,17 @@ const fireRune = new rune('Fire Rune', [
 ]);
 
 //SKILLS
-const execute = new skill('Execute', 20, null, null, false);
+const execute = new skill('Execute', 20, null, 'effect', false);
+
+//Skill logic
+function executeEffect() {
+  let executeC = Math.random() * 100;
+  if (mobIn.hp < (mobIn.maxHp * 0.2)) {
+    if (executeC < 25) {
+      skill.execute.dmg=mobIn.hp
+    }
+  }
+}
 
 //FLOORS
 const _1 = new floor('Floor 1', 
@@ -361,23 +432,29 @@ const _2 = new floor('Floor 2',
 const _3 = new floor('Floor 3', 
 [skeleton, slime, thief, fireSpirit],);
 const _4 = new floor('Floor 4', 
-                   ['SAFEZONE'],);
+                   [null],);
 const _5 = new floor('Floor 5', 
-                   ["BOSS"], 0);
+[skeletonBoss], 0);
 
 //player
 const player = new user(
   "PLAYER",
   100, //Hp
   100, //maxHp (Value to reset to)
+  100,//stamina
+  100,//max stamina
+  100,//mp
+  100,//max mp
   0, //resistance
   5, //Dmg
   1, //dmgMul
   0.25, //CritMul
+  10, //Crit Chance (critC)
   1, //Lv
   0, //Exp
   0, //Lv Points
-  100 //Max Xp
+  100, //Max Xp
+  new Array(),
 );
 
 //------------------------------------------------------------------------
@@ -412,20 +489,21 @@ function getMob() {
   console.log('DEBUG:', mobIn.name);
 }
 
-function preAction() {
+function preTurn() {
+  mobIn.takePoison();
+  mobIn.takeBurn();
   player.takePoison(); //poison damage "before" turn
   player.takeBurn(); // burn damage "before" turn
   // let mobHpPre = mobIn.hp; //stores mob hp pre damage
-  attack(); 
 }
 //attack function
-function attack() {
+function basicAttack() {
   // console.log('DEBUG PRE-DAMAGE:', player.displayInfo())
   
   //calculates damage and crit
   let cc = Math.random() * 100;
   let damage;
-  if (cc < 10) { //0-10
+  if (cc < player.critC) { //0-10
     console.log('DEBUG: CRIT_TRUE');
     damage = (player.dmg * player.dmgMul + (player.dmg * player.critMul)); //Dmg + Crit
   } else { // 11-100
@@ -433,8 +511,10 @@ function attack() {
     damage = (player.dmg * player.dmgMul); //Dmg without crit
   }
 
-  mobIn.hp = (mobIn.hp - damage);
+  mobIn.hp = Math.max((mobIn.hp - damage), 0);
   console.log('DEBUG MOB-HP:',mobIn.hp)
+  mobIn.applyPoison();
+  mobIn.applyBurn();
   mobIn.checkHp();
   mobIn.mobHpPost = mobIn.hp; //Stores mob hp post damage
   // mobIn.checkDamageDiff();
@@ -482,6 +562,11 @@ function DungeonFlsetup() {
     flbtns.appendChild(div);
   });
 }
+
+function endTurn() {
+  
+}
+
 DungeonFlsetup();
 function Enter() {
   document.getElementById("Floors").style = "display: none";
@@ -515,28 +600,25 @@ function Combat() { document.getElementById("Starting").style = "display: none";
   document.getElementById("CombatDecision").style = "display: block";
 }
 
-function updateCombatSideBars() {
-  
-}
-
-function applySideBars(div, space, left, percentage) {
-  if (left) {
-    document.getElementById(div).style.paddingLeft = (percentage + "%");
-    document.getElementById(space).style.paddingLeft = (parseInt(100 - percentage) + "%");
-  } else {
-    document.getElementById(div).style.paddingRight = (percentage + "%");
-    document.getElementById(space).style.paddingRight = (parseInt(100 - percentage) + "%");
-  }
-}
-
 function Rest()  { 
 document.getElementById('CombatDecision').classList.toggle('fade');
-   document.getElementById('CombatDecision').addEventListener('transitionend', () => {
-    document.getElementById('CombatDecision').style = "display: none";  
-   document.getElementById('RS').style = "display: block"; document.getElementById("RS").classList.toggle('fadein');
-
-  });
-}
+document.getElementById('CombatDecision').addEventListener('transitionend', () => {
+document.getElementById('CombatDecision').style = "display: none";  
+document.getElementById('RS').style = "display: block"; document.getElementById("RS").classList.toggle('fadein'); 
+});
+  setTimeout(function(){
+    RS.onclick = function Restend() {
+    document.getElementById('RS').style = "display:   none";
+    document.getElementById('CombatDecision').style = "display: block";
+    document.getElementById('CombatDecision').classList.toggle('fade');
+  
+    player.hp = player.maxHp;
+    player.stamina = player.maxStamina;
+    player.mp = player.maxMp
+    updateBars();
+    };
+}, 2000);
+};
 //call player.rest();
 function DungeonF() {
   document.getElementById("Enterfl").style = "display: none";
@@ -577,4 +659,65 @@ if (invVar) {
 function StatsSc() {
   document.getElementById("Starting").style = "display: none";
   document.getElementById("StatsSc").style = "display: block";
+}
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+document.getElementById("Attackbtns").style = "display: none";
+document.getElementById("Magicbtns").style = "display: none";
+document.getElementById("Skillbtns").style = "display: none";
+
+function Backpg() {
+  document.getElementById("Attackbtns").style = "display: none";
+  document.getElementById("CFbtns").style = "display: bloack";
+}
+function Backpg1() {
+  document.getElementById("Magicbtns").style = "display: none";
+    document.getElementById("Skillbtns").style = "display: none";
+  document.getElementById("Attackbtns").style = "display: bloack";
+}
+
+function Attackpg() {
+  document.getElementById("CFbtns").style = "display: none";
+document.getElementById("Attackbtns").style = "display: flex";
+}
+function Magicpg() {
+  document.getElementById("Attackbtns").style = "display: none";
+document.getElementById("Magicbtns").style = "display: flex";
+}
+function Skillpg() {
+  document.getElementById("Attackbtns").style = "display: none";
+document.getElementById("Skillbtns").style = "display: flex";
+}
+
+function updateBars() {
+  
+if (player.stamina < player.maxStamina) {
+    player.stamina =+ (player.maxStamina *0.05);
+  } 
+  if (player.stamina > player.maxStamina) {
+      player.stamina = player.maxStamina
+}
+  if (player.mp < player.maxMp) {
+    player.mp =+ (player.maxMp *0.05);
+  } 
+  if (player.mp > player.maxMp) {
+      player.mp = player.maxMp
+}
+  document.getElementById("HP").style.paddingLeft = parseInt((player.hp / player.maxHp) * 100) + "%";
+document.getElementById("EmptyHP").style.paddingLeft = (100 - parseInt(document.getElementById("HP").style.paddingLeft)) + "%";
+  document.getElementById("EXP").style.paddingLeft = parseInt((player.exp / player.maxExp) * 100) + "%";
+document.getElementById("EmptyEXP").style.paddingLeft = (100 - parseInt(document.getElementById("EXP").style.paddingLeft)) + "%";
+  document.getElementById("MP").style.paddingRight = parseInt((player.mp / player.maxMp) * 100) + "%";;
+document.getElementById("EmptyMP").style.paddingRight = (100 - parseInt(document.getElementById("MP").style.paddingRight)) + "%"; document.getElementById("Stamina").style.paddingRight = parseInt((player.stamina / player.maxStamina) * 100) + "%";;
+document.getElementById("EmptyStamina").style.paddingRight = (100 - parseInt(document.getElementById("Stamina").style.paddingRight)) + "%";
+  document.getElementById("EHP").style.paddingLeft = parseInt((mobIn.hp / mobIn.maxHp) * 100) + "%";
+document.getElementById("EmptyEHP").style.paddingLeft = (100 - parseInt(document.getElementById("EHP").style.paddingLeft)) + "%";
+};
+
+function combatLog() {
+  document.getElementById("comRep").innerHTML = "BATTLE WON";
+document.getElementById("comRep1").innerHTML = "EXP GAINED : " + player.exp;
+document.getElementById("comRep2").innerHTML = "COINS GAINED : " + player.hp;
+document.getElementById("comRep3").innerHTML = "LOOT OBTAINED : " + player.mp;
 }
