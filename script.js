@@ -177,6 +177,12 @@ class floor {
   }
 }
 
+class tree {
+  constructor(
+    
+  )
+}
+
 class mob {
   constructor(
 name,
