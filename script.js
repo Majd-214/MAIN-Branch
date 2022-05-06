@@ -2,10 +2,7 @@
 let invVar = true;
 
 // LEVEL
-let level = 1;
 let levelPoints = 1;
-let maxXp = 100;
-
 
 //Mob special attacks / Effects
 
@@ -16,8 +13,6 @@ let playerPoison = 0;
 let burnDmg = 5;
 //Other globals
 let mobIn;
-let hpLv = ((level - 1) / 10 + 1);
-let loot;
 //Skill notes: Strength, Dexterity, Constitution, Wisdom, Intelligence, Luck
 
 
@@ -68,7 +63,10 @@ class user {
     return 'Name:_' + this.name + '_HP:_' + this.hp +'_DAMAGE:_' + this.dmg +   
     '_LEVEL:_' + this.lv + '_EXP:_' + this.exp + '/' + this.maxExp + '_RES:_' + this.res + '_POISON:_' + playerPoison + '_BURN:_' + playerBurn
     }
-
+  
+  updateExp() {
+    this.maxExp = Math.round(100 + Math.pow((10 * this.lv),1.4)) //Max Xp scaling
+  }
   //element logic----------------------------
   applyBurn() {
     playerBurn = (mobIn.effectStr + playerBurn);
@@ -99,15 +97,15 @@ class user {
   }
   
   checkExp(){
-    let maxExp;
-    maxExp = ((player.lv / 10) +1) * player.maxExp;
-    
-    if (player.exp > player.maxExp) {
+    // let maxExp;
+    //maxExp = ((player.lv / 10) +1) * player.maxExp;
+    if (player.exp >= player.maxExp) {
       player.exp = (player.exp - player.maxExp);
       player.lv++;
       player.lvPoints++;
-      player.maxExp = maxExp; //Check globals for equation
+      // player.maxExp = maxExp; //Check globals for equation
     }
+    this.updateExp();
   }
 
   collectLoot() {
@@ -182,7 +180,6 @@ class floor {
 class mob {
   constructor(
 name,
-hp,
 maxHp,
 dmg,
 loot,
@@ -194,7 +191,7 @@ spDmg,
 poison,
 burn) {
     this.name=name;
-    this.hp=hp;
+    this.hp=maxHp
     this.maxHp=maxHp;
     this.dmg=dmg;
     this.loot=loot;
@@ -210,11 +207,10 @@ burn) {
   }
 
   displayStats() {
-    console.log(
-  
-    )
+    console.log();
   }
-  
+
+
   turn() {
     let ai = Math.random() * 100;
     if (ai < 10) {
@@ -228,6 +224,8 @@ burn) {
     console.log('DEBUG POST-DAMAGE', player.displayInfo());
     updateBars();
     player.checkHp();
+    player.checkExp();
+    // player.updateExp();
     preTurn();
   }
   
@@ -252,6 +250,15 @@ burn) {
     }
   }
   
+  hpScaling() {
+    this.maxHp *= ((player.lv) / 10) + 1;
+    console.log("DEBUG ~ Mob Max hp: " + this.maxHp);
+  }
+
+  resetHp () {
+    this.hp = this.maxHp;
+  }
+   
   checkHp() {
     if (this.hp <= 0) {
  document.getElementById("CFS").style = "display: none";
@@ -262,7 +269,7 @@ burn) {
       player.checkExp();
       this.dropLoot();
       player.collectLoot();
-      mobIn.dead = true;
+      this.dead = true;
       Report.reset();
       Report.setValues();
       Report.update();
@@ -300,8 +307,8 @@ burn) {
     }
   }
   reset() {
-    this.hp=this.maxHp;
-    this.dead=false;
+    this.hp = this.maxHp;
+    this.dead = false;
     this.lootGained = null;
     console.log('--DEBUG RESET!!!--')
   }
@@ -362,11 +369,11 @@ const woodClub = new melee('Wood club', 7.5, null, null, false);
 
 const rustySpike = new melee('Really rusty spike', 5, 'poison', 5, false);
 
-const knife = new melee('Knife', 10, null, null, false);
+const knife = new melee('Knife', 10, null, null, true);
 
 const longSword = new melee('Long Sword', 20, null, null, true);
 
-const adminSword = new melee('God sword', 1000, null, null, true);
+const adminSword = new melee('God sword', 1000, null, null, false);
 
 const BFS = new melee('Big Friendly Sword', 25, null, null, false);
 
@@ -378,46 +385,68 @@ const fireSword = new melee('Fire Sword', 20, 'burn', 5, false);
 const leatherArmor = new armor('Leather Armor', 5, null, false);
 const chainmail = new armor('Chainmail', 10, null, false);
 const darkCoat = new armor('Dark Coat', 30, 'dark', false)
+
+//player
+const player = new user(
+  "PLAYER",
+  100, //Hp
+  100, //maxHp (Value to reset to)
+  100,//stamina
+  100,//max stamina
+  100,//mp
+  100,//max mp
+  0, //resistance
+  5, //Dmg
+  1, //dmgMul
+  0.25, //CritMul
+  10, //Crit Chance (critC)
+  1, //Lv
+  0, //Exp
+  0, //Lv Points
+  125, // Max Exp
+  new Array,
+);
+
 //---------------------------------------------
 //MOBS
   //theif
-const thief = new mob('Theif', 100 * hpLv, 100 * hpLv, 5, [
+const thief = new mob('Theif', 100, 5, [
   ['Knife', 100],
   ['Mysterious Ring', 100],
   ['Potion of BIG-ENING', 100],
-], 5, null, null, 10, 100)
+], 100, null, null, 10, 100)
 
   //SLIME
-const slime = new mob('Slime', 200 * hpLv, 200 * hpLv, 2.5, [
+const slime = new mob('Slime', 200, 2.5, [
   ['Slime ball', 100], 
   ['Chainmail', 100],
-], 5, 'poison', 2, 10, 5);
+], 100, 'poison', 2, 10, 5);
 
   //SKELETON
-const skeleton = new mob('Skeleton', 100 * hpLv, 100 * hpLv, 10, [
+const skeleton = new mob('Skeleton', 100, 10, [
   ['Bone', 100],
   ['Long Sword', 100]
-], 5, null, null, 10, 20);
+], 100, null, null, 10, 20);
 
   //FIRESPIRIT
-const fireSpirit = new mob('Fire Spirit', 50 * hpLv, 50 * hpLv, 15, [
+const fireSpirit = new mob('Fire Spirit',50, 15, [
   ['Essence', 100],
-], 5, 'burn', 2, 25, 5);
+], 100, 'burn', 2, 25, 5);
 
   //GOBLIN
-const goblin = new mob('Goblin', 75 * hpLv, 75 * hpLv, 10, [
+const goblin = new mob('Goblin', 75, 10, [
   ['Leather Armor', 100],
   ['Goblin Ears', 100],
-], 10, null, null, 10, 20);
+], 100, null, null, 10, 20);
 
 //BOSSES
-const skeletonBoss = new mob('Skeleton King', 350 * hpLv, 350 * hpLv, 20, [
+const skeletonBoss = new mob('Skeleton King', 350, 20, [
   ['Big Friendly Sword', 100],
   ['Cursed bones', 100],
   ['Dark Coat', 100],
 ], 100, null, null, 10, 35);
 
-const crab = new mob('CRAB?', 1 * hpLv, 10 * hpLv, 1000, [
+const crab = new mob('CRAB?', 1, 1000, [
   ['Claw Claymore',100],
   ['Expensive Food', 100],
 ]);
@@ -445,7 +474,7 @@ function executeEffect() {
 //FLOORS
 const _1 = new floor('Floor 1', 
 [slime, thief], 0);
-const _2 = new floor('Floor 2', 
+const _2 = new floor('Floor 2',   
 [slime, thief, skeleton],);
 const _3 = new floor('Floor 3', 
 [skeleton, slime, thief, fireSpirit],);
@@ -454,26 +483,7 @@ const _4 = new floor('Floor 4',
 const _5 = new floor('Floor 5', 
 [skeletonBoss], 0);
 
-//player
-const player = new user(
-  "PLAYER",
-  100, //Hp
-  100, //maxHp (Value to reset to)
-  100,//stamina
-  100,//max stamina
-  100,//mp
-  100,//max mp
-  0, //resistance
-  5, //Dmg
-  1, //dmgMul
-  0.25, //CritMul
-  10, //Crit Chance (critC)
-  1, //Lv
-  0, //Exp
-  0, //Lv Points
-  100, //Max Xp
-  new Array(),
-);
+
 
 //------------------------------------------------------------------------
 //EQUIPMENT SWITCH STATEMENTS
@@ -525,6 +535,8 @@ function getMob() {
   const possibleMob = currentFloor.mob
   let randomMob = Math.floor(Math.random() * possibleMob.length);
   mobIn = possibleMob[randomMob];
+  mobIn.hpScaling();
+  mobIn.resetHp();
   console.log('DEBUG:', mobIn.name);
 }
 
@@ -764,7 +776,7 @@ class Report {
 
   static setValues() {
     this.exp = mobIn.exp;
-    this.loot = player.loot;
+    this.loot = mobIn.lootGained;
     this.coins = 0;
   }
   
