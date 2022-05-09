@@ -173,15 +173,15 @@ class floor {
   }
   
   getFloor() {
-    return currentFloor = _1
+    return currentFloor;
   }
 }
 
-class tree {
-  constructor(
+// class tree {
+//   constructor(
     
-  )
-}
+//   )
+// }
 
 class mob {
   constructor(
@@ -257,7 +257,7 @@ burn) {
   }
   
   hpScaling() {
-    this.maxHp *= ((player.lv) / 10) + 1;
+    this.maxHp = Math.round(this.maxHp * (((player.lv) / 10) + 1));
     console.log("DEBUG ~ Mob Max hp: " + this.maxHp);
   }
 
@@ -478,16 +478,27 @@ function executeEffect() {
 }
 
 //FLOORS
-const _1 = new floor('Floor 1', 
-[slime, thief], 0);
-const _2 = new floor('Floor 2',   
-[slime, thief, skeleton],);
-const _3 = new floor('Floor 3', 
-[skeleton, slime, thief, fireSpirit],);
-const _4 = new floor('Floor 4', 
-                   [null],);
-const _5 = new floor('Floor 5', 
-[skeletonBoss], 0);
+
+let floors = new Array();
+floors.push(new floor('Floor 1', 
+[slime, thief], 0));
+floors.push(new floor('Floor 2', 
+[slime, thief, skeleton], 0));
+floors.push(new floor('Floor 3', 
+[slime, thief, skeleton, fireSpirit], 0));
+floors.push(new floor('Floor 4', 
+[null], 0));
+floors.push(new floor('Floor 5', 
+[skeletonBoss], 0));
+// const _1 = new floor('Floor 1', [slime, thief], 0);
+// const _2 = new floor('Floor 2',   
+// [slime, thief, skeleton],);
+// const _3 = new floor('Floor 3', 
+// [skeleton, slime, thief, fireSpirit],);
+// const _4 = new floor('Floor 4', 
+//                    [null],);
+// const _5 = new floor('Floor 5', 
+// [skeletonBoss], 0);
 
 
 
@@ -534,7 +545,7 @@ if (darkCoat.status) {
 
 //mob randomizer
 function getMob() {
-  currentFloor = _3
+  //currentFloor = floors[2];
  //!!!FOR NOW!!!
   
   //randomizes mob-in-battle by possible mobs
@@ -606,6 +617,7 @@ function DungeonFlsetup() {
       console.log(flr + " button clicked!");
       currentFloor = index + 1;
       console.log("Current Floor: " + currentFloor);
+      currentFloor = floors.at(index);
       Enter();
     };
 
