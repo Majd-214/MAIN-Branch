@@ -498,6 +498,25 @@ background-color: white;
   min-height: 70vw;
         max-height: 70vw;
 }
+.Invbtns {
+  flex: 1;
+  background-color: #000000;
+  border: solid;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 5vw;
+  border-radius: 3px;
+  height: 100%;
+  width: 96%;
+  font-family: 'Smooch Sans', sans-serif;
+  margin: 2%;
+}
+.invbtns:hover{
+background-color: white;
+  color: black;
+}
 
 /* Stats Screen */
 #StatsSc {

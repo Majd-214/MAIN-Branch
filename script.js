@@ -12,8 +12,10 @@ let poison;
 let playerPoison = 0;
 let burnDmg = 5;
 //Other globals
-let mobIn;
+let mobs = new Array();
 //Skill notes: Strength, Dexterity, Constitution, Wisdom, Intelligence, Luck
+
+
 
 
 //CLASSES-------------------------------------------------------
@@ -69,11 +71,11 @@ class user {
   }
   //element logic----------------------------
   applyBurn() {
-    playerBurn = (mobIn.effectStr + playerBurn);
+    playerBurn = (mobs[0].effectStr + playerBurn);
   }
   
   applyPoison() {
-    playerPoison = (mobIn.effectStr + playerPoison); 
+    playerPoison = (mobs[0].effectStr + playerPoison); 
   }
   
   takePoison() {
@@ -109,9 +111,9 @@ class user {
   }
 
   collectLoot() {
-    mobIn.lootGained.forEach((label, index) => {
-      if (mobIn.lootGained[index] != null && mobIn.lootGained[index] != undefined) {
-        this.loot.push(mobIn.lootGained[index]);
+    mobs[0].lootGained.forEach((label, index) => {
+      if (mobs[0].lootGained[index] != null && mobs[0].lootGained[index] != undefined) {
+        this.loot.push(mobs[0].lootGained[index]);
       }
     });
   }
@@ -135,7 +137,7 @@ class user {
         const btn = document.createElement("button");
         // const image = document.createElement("img");
 
-        btn.className = "btns";
+        btn.className = "Invbtns";
         // image.className = "images";
 
         btn.id = id;
@@ -147,7 +149,7 @@ class user {
     
         // Set up the button
         btn.innerHTML = id + " x" + instances;
-        btn.className = "btns";
+        btn.className = "Invbtns";
         btn.style.flex = 1;
     
         btn.onclick = function click() {
@@ -471,9 +473,9 @@ const execute = new skill('Execute', 20, null, 'effect', false);
 //Skill logic
 function executeEffect() {
   let executeC = Math.random() * 100;
-  if (mobIn.hp < (mobIn.maxHp * 0.2)) {
+  if (mobs[0].hp < (mobs[0].maxHp * 0.2)) {
     if (executeC < 25) {
-      skill.execute.dmg=mobIn.hp
+      skill.execute.dmg=mobs[0].hp
     }
   }
 }
@@ -551,19 +553,26 @@ function getMob() {
   
   //randomizes mob-in-battle by possible mobs
   const possibleMob = currentFloor.mob
-  let randomMob = Math.min(Math.floor(Math.random() * possibleMob.length), possibleMob.length - 1);
-  mobIn = possibleMob[randomMob];
-  mobIn.hpScaling();
-  mobIn.resetHp();
-  console.log('DEBUG:', mobIn.name);
+  
+  // mobIn = possibleMob[randomMob];
+
+  for (i = 0; i < currentFloor.mobNum; i++) {
+    let randomMob =       Math.min(Math.floor(Math.random() * possibleMob.length), possibleMob.length - 1);
+    mobs.push(possibleMob[randomMob]);
+    
+    mobs[i].hpScaling();
+    mobs[i].resetHp();
+    console.log('DEBUG:', mobs[i].name);
+  }
+
 }
 
 function preTurn() {
-  mobIn.takePoison();
-  mobIn.takeBurn();
+  mobs[0].takePoison();
+  mobs[0].takeBurn();
   player.takePoison(); //poison damage "before" turn
   player.takeBurn(); // burn damage "before" turn
-  // let mobHpPre = mobIn.hp; //stores mob hp pre damage
+  // let mobHpPre = mobs[0].hp; //stores mob hp pre damage
 }
 //attack function
 function basicAttack() {
@@ -580,14 +589,14 @@ function basicAttack() {
     damage = (player.dmg * player.dmgMul); //Dmg without crit
   }
 
-  mobIn.hp = Math.max((mobIn.hp - damage), 0);
-  console.log('DEBUG MOB-HP:',mobIn.hp)
-  mobIn.applyPoison();
-  mobIn.applyBurn();
-  mobIn.checkHp();
-  mobIn.mobHpPost = mobIn.hp; //Stores mob hp post damage
-  // mobIn.checkDamageDiff();
-  if (mobIn.hp > 0) mobIn.turn();
+  mobs[0].hp = Math.max((mobs[0].hp - damage), 0);
+  console.log('DEBUG MOB-HP:',mobs[0].hp)
+  mobs[0].applyPoison();
+  mobs[0].applyBurn();
+  mobs[0].checkHp();
+  mobs[0].mobHpPost = mobs[0].hp; //Stores mob hp post damage
+  // mobs[0].checkDamageDiff();
+  if (mobs[0].hp > 0) mobs[0].turn();
   
 }
 //creat dungeon floors
@@ -781,7 +790,7 @@ document.getElementById("EmptyEXP").style.paddingLeft = (100 - parseInt(document
   document.getElementById("MP").style.paddingRight = parseInt((player.mp / player.maxMp) * 100) + "%";;
 document.getElementById("EmptyMP").style.paddingRight = (100 - parseInt(document.getElementById("MP").style.paddingRight)) + "%"; document.getElementById("Stamina").style.paddingRight = parseInt((player.stamina / player.maxStamina) * 100) + "%";;
 document.getElementById("EmptyStamina").style.paddingRight = (100 - parseInt(document.getElementById("Stamina").style.paddingRight)) + "%";
-  document.getElementById("EHP").style.paddingLeft = parseInt((mobIn.hp / mobIn.maxHp) * 100) + "%";
+  document.getElementById("EHP").style.paddingLeft = parseInt((mobs[0].hp / mobs[0].maxHp) * 100) + "%";
 document.getElementById("EmptyEHP").style.paddingLeft = (100 - parseInt(document.getElementById("EHP").style.paddingLeft)) + "%";
 };
 
@@ -794,13 +803,13 @@ class Report {
   }
 
   static setValues() {
-    this.exp = mobIn.exp;
-    this.loot = mobIn.lootGained;
+    this.exp = mobs[0].exp;
+    this.loot = mobs[0].lootGained;
     this.coins = 0;
   }
   
   static update() {
-    document.getElementById("comRep").innerHTML = mobIn.dead ? "BATTLE WON" : "BATTLE LOST";
+    document.getElementById("comRep").innerHTML = mobs[0].dead ? "BATTLE WON" : "BATTLE LOST";
   document.getElementById("comRep1").innerHTML = "EXP GAINED : " + this.exp;
   document.getElementById("comRep2").innerHTML = "COINS GAINED : " + this.coins;
   document.getElementById("comRep3").innerHTML = "LOOT OBTAINED : " + this.loot;
