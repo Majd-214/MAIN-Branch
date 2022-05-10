@@ -166,11 +166,12 @@ class user {
 }
 
 class floor {
-  constructor(num, mob, npc) {
+  constructor(num, mob, mobNum) {
     this.num=num;
     this.mob=mob;
-    this.npc=npc;
+    this.mobNum=mobNum;
   }
+  //Nummobmobnum (Useful)
   
   getFloor() {
     return currentFloor;
@@ -481,15 +482,15 @@ function executeEffect() {
 
 let floors = new Array();
 floors.push(new floor('Floor 1', 
-[slime, thief], 0));
+[slime, thief], 3 ));
 floors.push(new floor('Floor 2', 
-[slime, thief, skeleton], 0));
+[slime, thief, skeleton], 4));
 floors.push(new floor('Floor 3', 
-[slime, thief, skeleton, fireSpirit], 0));
+[slime, thief, skeleton, fireSpirit], 5));
 floors.push(new floor('Floor 4', 
 [null], 0));
 floors.push(new floor('Floor 5', 
-[skeletonBoss], 0));
+[skeletonBoss], 1));
 // const _1 = new floor('Floor 1', [slime, thief], 0);
 // const _2 = new floor('Floor 2',   
 // [slime, thief, skeleton],);
@@ -550,7 +551,7 @@ function getMob() {
   
   //randomizes mob-in-battle by possible mobs
   const possibleMob = currentFloor.mob
-  let randomMob = Math.floor(Math.random() * possibleMob.length);
+  let randomMob = Math.min(Math.floor(Math.random() * possibleMob.length), possibleMob.length - 1);
   mobIn = possibleMob[randomMob];
   mobIn.hpScaling();
   mobIn.resetHp();
