@@ -273,8 +273,8 @@ burn) {
     if (this.hp <= 0) {
 			if (mobs.length <= 1) {
 			 document.getElementById("CFS").style = "display: none";
-		  document.getElementById("DFSN").style = "display: none";
-		  document.getElementById("CombatDecision").style = "display: block";
+			  document.getElementById("DFSN").style = "display: none";
+			  document.getElementById("CombatDecision").style = "display: block";
 			}
 			console.log(mobs);
       console.log('YOU WIN!');
@@ -287,13 +287,12 @@ burn) {
       // this.reset();
 			console.log(mobs.length);
 			if (mobs.length > 0) {
-				if (mobs.length <= 1) {
-					Report.reset();
-		      Report.update();
-				}
+				if (mobs.length <= 1) Report.update();
 				mobs.shift();
-				mobs[0].hpScaling();
-				mobs[0].resetHp();
+				if (mobs.length > 0) {
+					mobs[0].hpScaling();
+					mobs[0].resetHp();
+				}
 				console.log(mobs.length);
 				console.log(mobs);
 			}
@@ -722,7 +721,8 @@ function DungeonF() {
 }
 
 function Fight() { 
-document.getElementById("CombatDecision").style = "display: none";
+	Report.reset();
+	document.getElementById("CombatDecision").style = "display: none";
   document.getElementById("DFSN").style = "display: none";
   document.getElementById("CFS").style = "display: block"; 
   if (mobs.length <= 0) getMob();
@@ -826,7 +826,7 @@ class Report {
 
   static reset() {
     this.exp = 0;
-    this.loot = 0;
+    this.loot = new Array();
     this.coins = 0;
   }
 
@@ -838,7 +838,7 @@ class Report {
 
 	static addValues() {
 		this.exp += mobs[0].exp;
-    this.loot += mobs[0].lootGained;
+    this.loot.push(mobs[0].lootGained);
     this.coins += 0;
 	}
   
