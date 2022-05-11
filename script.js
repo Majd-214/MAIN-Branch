@@ -202,6 +202,7 @@ burn) {
     this.name=name;
     this.hp=maxHp
     this.maxHp=maxHp;
+    this.defaultHp=maxHp;
     this.dmg=dmg;
     this.loot=loot;
     this.exp=exp;
@@ -260,7 +261,7 @@ burn) {
   }
   
   hpScaling() {
-    this.maxHp = Math.round(this.maxHp * (((player.lv) / 10) + 1));
+    this.maxHp = Math.round(this.defaultHp * (((player.lv) / 10) + 1));
     console.log("DEBUG ~ Mob Max hp: " + this.maxHp);
   }
 
@@ -270,19 +271,32 @@ burn) {
    
   checkHp() {
     if (this.hp <= 0) {
- document.getElementById("CFS").style = "display: none";
-  document.getElementById("DFSN").style = "display: none";
-  document.getElementById("CombatDecision").style = "display: block";
+			if (mobs.length <= 1) {
+			 document.getElementById("CFS").style = "display: none";
+		  document.getElementById("DFSN").style = "display: none";
+		  document.getElementById("CombatDecision").style = "display: block";
+			}
+			console.log(mobs);
       console.log('YOU WIN!');
       player.exp = (player.exp + this.exp)
       player.checkExp();
       this.dropLoot();
       player.collectLoot();
       this.dead = true;
-      Report.reset();
-      Report.setValues();
-      Report.update();
-      this.reset();
+			Report.addValues();
+      // this.reset();
+			console.log(mobs.length);
+			if (mobs.length > 0) {
+				if (mobs.length <= 1) {
+					Report.reset();
+		      Report.update();
+				}
+				mobs.shift();
+				mobs[0].hpScaling();
+				mobs[0].resetHp();
+				console.log(mobs.length);
+				console.log(mobs);
+			}
     }
   }
   
@@ -558,8 +572,8 @@ function getMob() {
 
   for (i = 0; i < currentFloor.mobNum; i++) {
     let randomMob =       Math.min(Math.floor(Math.random() * possibleMob.length), possibleMob.length - 1);
-    mobs.push(possibleMob[randomMob]);
-    
+    mobs.push(Object.create(possibleMob[randomMob]));
+    mobs[i].reset();
     mobs[i].hpScaling();
     mobs[i].resetHp();
     console.log('DEBUG:', mobs[i].name);
@@ -659,7 +673,7 @@ function Enter() {
 }
 //Change screen Functions
 function Return()  { document.getElementById("CombatDecision").style = "display: none";
-document.getElementById("InventorySc").style = "display: none";
+document.getElementById("CharacterSc").style = "display: none";
 document.getElementById("StatsSc").style = "display: none";
   document.getElementById("Starting").style = "display: block"; 
 }
@@ -711,24 +725,23 @@ function Fight() {
 document.getElementById("CombatDecision").style = "display: none";
   document.getElementById("DFSN").style = "display: none";
   document.getElementById("CFS").style = "display: block"; 
-  
-  getMob();
+  if (mobs.length <= 0) getMob();
 }
 function Inventory(state) {
   if (state) {
     invVar = true;
     document.getElementById("Starting").style = "display: none"; 
-    document.getElementById("InventorySc").style = "display: block";
+    document.getElementById("CharacterSc").style = "display: block";
   } else {
     invVar = false;
     document.getElementById("CFS").style = "display: none"; 
-    document.getElementById("InventorySc").style = "display: block";
+    document.getElementById("CharacterSc").style = "display: block";
   }
   player.runInventory();
 }
 
 function invReturn() {
-  document.getElementById("InventorySc").style = "display: none";
+  document.getElementById("CharacterSc").style = "display: none";
 if (invVar) {
   document.getElementById("Starting").style = "display: block";
 } else {
@@ -767,6 +780,21 @@ document.getElementById("Magicbtns").style = "display: flex";
 function Skillpg() {
   document.getElementById("Attackbtns").style = "display: none";
 document.getElementById("Skillbtns").style = "display: flex";
+}
+function CharacterPage() { 
+  document.getElementById("Statspage").style = "display: none"; 
+  document.getElementById("SkillsPage").style = "display: none"; 
+  document.getElementById("CharacterPage").style = "display: block";
+}
+function StatPage() { 
+  document.getElementById("SkillsPage").style = "display: none"; 
+  document.getElementById("CharacterPage").style = "display: none"; 
+  document.getElementById("Statspage").style = "display: block";
+}
+function SkillPage() { 
+  document.getElementById("Statspage").style = "display: none"; 
+  document.getElementById("CharacterPage").style = "display: none"; 
+  document.getElementById("SkillsPage").style = "display: block";
 }
 
 function updateBars() {
@@ -807,9 +835,15 @@ class Report {
     this.loot = mobs[0].lootGained;
     this.coins = 0;
   }
+
+	static addValues() {
+		this.exp += mobs[0].exp;
+    this.loot += mobs[0].lootGained;
+    this.coins += 0;
+	}
   
   static update() {
-    document.getElementById("comRep").innerHTML = mobs[0].dead ? "BATTLE WON" : "BATTLE LOST";
+    document.getElementById("comRep").innerHTML = mobs[0].dead ? "FLOOR CLEARED!" : "GAME OVER!";
   document.getElementById("comRep1").innerHTML = "EXP GAINED : " + this.exp;
   document.getElementById("comRep2").innerHTML = "COINS GAINED : " + this.coins;
   document.getElementById("comRep3").innerHTML = "LOOT OBTAINED : " + this.loot;

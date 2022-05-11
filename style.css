@@ -534,7 +534,7 @@ color: white;
   font-family: 'Smooch Sans', sans-serif;
 text-align: center;
 }
-#StatsPage {
+#Statpage {
   display: flex;
   height: 100%;
   width: 100%;
@@ -546,21 +546,54 @@ text-align: center;
   flex-direction: column;
 }
 
-/* Lvl up screen */
-#LVLSc {
+/* CHARACTER SCREEN */
+#CharacterSc {
   display: none;
+}
+.txt {
+color: white;
+  font-size: 5vw;
+  font-family: 'Smooch Sans', sans-serif;
+tex-align: center;
+}
+.CHbtns {
+  flex: 1;
+  background-color: #000000;
+  border: solid;
+  color: white;
+  text-align: center;
+
+  font-size: 5vw;
+  border-radius: 10000px;
+  height: 100%;
+  width: 96%;
+  font-family: 'Smooch Sans', sans-serif;
+  margin: 2%;
+}
+.CHbtns:hover{
+background-color: white;
+  color: black;
+}
+.CHTitle {
+  color: white;
+  font-family: 'Smooch Sans', sans-serif;
+  font-size: 5vw;
+  text-align: center;
+  flex: 3;
+  text-decoration: underline;
+}
+#CHT {
+  display: flex;
+}
+#CHreturn {
+  flex: 1;
+  height: 50%;
 }
 #LVLT {
   display: flex;
 }
 #LVLTitle {
   flex: 3;
-}
-.Txt {
-color: white;
-  font-size: 3vw;
-  font-family: 'Smooch Sans', sans-serif;
-text-align: center;
 }
 #LVLPage {
   display: flex;
@@ -573,6 +606,90 @@ text-align: center;
   display: flex;
   flex-direction: column;
 }
-.loot {
+#LVLtxt {
+  display: flex;
+  flex-direction: row;
+  font-family: 'Smooch Sans', sans-serif;
+   color: white;
+  font-size: 5vw;
+  margin: 2%;
+}
+.LVLtxt {
+   display: flex;
+  flex-direction: row;
+  font-family: 'Smooch Sans', sans-serif;
+   color: white;
+  font-size: 5vw;
+  margin: 2%;
+}
+.LVLbtns {
+  background-color: #000000;
+  border: solid;
   color: white;
+  text-align: center;
+  font-size: 5vw;
+  border-radius: 10px;
+  font-family: 'Smooch Sans', sans-serif;
+  margin-left: auto;
+  margin-right: 2%;
+
+}
+.LVLbtns:hover{
+background-color: white;
+  color: black;
+}
+#Statspage {
+  display: none;
+}
+#SkillsPage {
+  display: none;
+}
+#CharacterPage {
+    display: flex;
+  flex-direction: column;
+}
+#Stats-CH {
+  display: flex;
+  flex-direction: row;
+}
+.StCh {
+  margin: 2%;
+}
+.Sttxt {
+  color: white;
+  text-align: center;
+  font-size: 4vw;
+  border-radius: 10px;
+  font-family: 'Smooch Sans', sans-serif;
+}
+#InventoryPage {
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: 25% 25% 25% 25%;
+  background-color: #545454ff;
+  padding: 10px;
+  margin: 2%;
+  border: solid white 2px;
+  border-radius: 10px;
+  min-height: 40vw;
+  max-height: 40vw;
+}
+.dmgSkill {
+   display: flex;
+  flex-direction: column;
+  font-family: 'Smooch Sans', sans-serif;
+   color: white;
+  font-size: 5vw;
+  margin: 2%;
+}
+.dmgStext {
+  text-decoration: underline;
+  margin: -1%;
+}
+.DMGSKILLTEXT {
+   display: flex;
+  flex-direction: column;
+  font-family: 'Smooch Sans', sans-serif;
+   color: white;
+  font-size: 5vw;
 }

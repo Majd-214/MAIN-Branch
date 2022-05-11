@@ -16,7 +16,7 @@
     <div id="SZ">
       <div id="Sbtns">
     <div class="TS" id="Inventory">
-      <button class="btns" onclick="Inventory(true)"> I N V E N T O R Y </button>
+      <button class="btns" onclick="Inventory(true)"> C H A R A C T E R </button>
     </div>
     <div class="TS" id="Combat">
       <button class="btns" onclick="Combat()"> C O M B A T </button>
@@ -218,15 +218,135 @@ C O M B A T - R E P O R T
 </div>
     
 <!-- Inventory Screen -->
-<div id="InventorySc">
-    <div id="II">
-      <div id="IT">
-        <div id="return">
-          <button class="btns" onclick="invReturn()"> RETURN </button>
+  <div id="CharacterSc">
+    <div id="CHI">
+      <div id="CHT">
+        <div id="CHreturn">
+          <button class="CHbtns" onclick="invReturn()"> RETURN </button>
         </div>
-        <div id="ITitle" class="Title"> INVENTORY </div>
+        <div id="CH" class="CHTitle" onclick="CharacterPage()"> C H A R A C T E R </div>
+        <div id="CHST" class="CHTitle" onclick="StatPage()"> S T A T S </div>
+        <div id="CHSK" class="CHTitle" onclick="SkillPage()"> S K I L L S </div>
       </div>
-      <div id="InventoryPage">
+      <div>
+        <div id="CharacterPage">
+          <div>
+            <div id="Stats-CH">
+              <div class="StCh">
+                <div class="Sttxt"> Strength : 0 </div>
+                <div class="Sttxt"> Dexterity : 0 </div>
+                <div class="Sttxt"> Constitution : 0 </div>
+                <div class="Sttxt"> Intellegence : 0 </div>
+                <div class="Sttxt"> Wisdom : 0 </div>
+                <div class="Sttxt"> Energy : 0 </div>
+              </div>
+              <div class="StCh">
+                <div class="Sttxt"> Luck : 0 </div>
+                <div class="Sttxt"> Choas : 0 </div>
+                <div class="Sttxt"> Holy : 0 </div>
+                <div class="Sttxt"> Armor : 0 </div>
+                <div class="Sttxt"> Magic Armor : 0 </div>
+                <div class="Sttxt"> Damage : 0 </div>
+              </div>
+            </div>
+            <div id="Equip">
+
+            </div>
+          </div>
+          <div id="InventoryPage">
+
+          </div>
+        </div>
+        <div id="Statspage">
+          <div id="LVLSc">
+            <div id="LVLI">
+              <div id="LVLPage">
+                <div class="LVLColumns">
+                  <div class="LVLtxt">
+                    Strength : 0
+                    <button class="LVLbtns"> ^ </button>
+                  </div>
+                  <div class="LVLtxt">
+                    Dexterity : 0
+                    <button class="LVLbtns"> ^ </button>
+                  </div>
+                  <div class="LVLtxt">
+                    Consitution : 0
+                    <button class="LVLbtns"> ^ </button>
+                  </div>
+                  <div id="LVLtxt"> LEVEL POINTS : 16 </div>
+                </div>
+                <div class="LVLColumns">
+                  <div class="LVLtxt">
+                    Intellegence : 0
+                    <button class="LVLbtns"> ^ </button>
+                  </div>
+                  <div class="LVLtxt">
+                    Wisdom : 0
+                    <button class="LVLbtns"> ^ </button>
+                  </div>
+                  <div class="LVLtxt">
+                    Energy : 0
+                    <button class="LVLbtns"> ^ </button>
+                  </div>
+                  <button class="LVLbtns"> Confirm </button>
+                </div>
+                <div class="LVLColumns">
+                  <div class="LVLtxt">
+                    Luck : 0
+                    <button class="LVLbtns"> ^ </button>
+                  </div>
+                  <div class="LVLtxt">
+                    Choas : 0
+                    <button class="LVLbtns"> ^ </button>
+                  </div>
+                  <div class="LVLtxt">
+                    Holy : 0
+                    <button class="LVLbtns"> ^ </button>
+                  </div>
+                  <button class="LVLbtns"> DENY </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="SkillsPage">
+          <div id="UnlockSkill">
+            <div id="Melee" class="dmgSkill">
+              <p class="dmgStext">MELEE</p>
+              <div class="DMGSKILLTEXT">
+                <div> EXECUTE
+                  <button class="LVLbtns"> SEE </button>
+                </div>
+                <div> BASH
+                  <button class="LVLbtns"> SEE </button>
+                </div>
+                <div> FURY
+                  <button class="LVLbtns"> SEE </button>
+                </div>
+              </div>
+            </div>
+            <div id="Magic" class="dmgSkill">
+              <p class="dmgStext">MAGIC</p>
+              <div class="DMGSKILLTEXT">
+                <div> FIREBALL
+                  <button class="LVLbtns"> SEE </button>
+                </div>
+                <div> SMITE
+                  <button class="LVLbtns"> SEE </button>
+                </div>
+                <div> LESSER HEAL
+                  <button class="LVLbtns"> SEE </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="GraphTXT">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -240,7 +360,7 @@ C O M B A T - R E P O R T
         </div>
         <div id="StatTitle" class="Title"> S T A T  S : </div>
       </div>
-      <div id="StatsPage">
+      <div id="StatPage">
         <div class="StatColumns">
           <div class="Txt"> enemies killed: </div>
           <div class="Txt"> 153 </div>
@@ -264,38 +384,6 @@ C O M B A T - R E P O R T
 </div>
     
 <!-- Screen -->
-    <div id="LVLSc">
-    <div id="LVLI">
-      <div id="LVLT">
-        <div id="return">
-          <button class="btns" onclick="Return()"> RETURN </button>
-        </div>
-        <div id="LVLTitle" class="Title"> LEVEL UP </div>
-      </div>
-      <div id="LVLPage">
-        <div class="LVLColumns">
-        <div></div>
-        <div></div>
-        <div></div>
-        </div>
-        <div class="LVLUpColumns">
-        <div></div>
-        <div></div>
-        <div></div>
-        </div>
-        <div class="LVLColumns">
-        <div></div>
-        <div></div>
-        <div></div>
-        </div>
-        <div class="LVLUpColumns">
-        <div></div>
-        <div></div>
-        <div></div>
-        </div>
-        </div>
-    </div>
-  </div>
     
     <script src="script.js"></script>
   </body>
