@@ -19,7 +19,7 @@ let mobs = new Array();
 
 
 //CLASSES-------------------------------------------------------
-class user {
+class User {
   constructor(
     //User values
     name, 
@@ -153,10 +153,7 @@ class user {
         btn.style.flex = 1;
     
         btn.onclick = function click() {
-          console.log(id + " button clicked!");
-          currentFloor = index + 1;
-          console.log("Current Floor: " + currentFloor);
-          Enter();
+          
         };
   
       // Set up the div
@@ -167,7 +164,7 @@ class user {
   }
 }
 
-class floor {
+class Floor {
   constructor(num, mob, mobNum) {
     this.num=num;
     this.mob=mob;
@@ -186,12 +183,13 @@ class floor {
 //   )
 // }
 
-class mob {
+class Mob {
   constructor(
 name,
 maxHp,
 dmg,
 loot,
+coins,
 exp,
 effect,
 effectStr,
@@ -205,6 +203,7 @@ burn) {
     this.defaultHp=maxHp;
     this.dmg=dmg;
     this.loot=loot;
+    this.coins=coins;
     this.exp=exp;
     this.effect=effect; //Element applied on special attack
     this.effectStr=effectStr; //Amount of counters for effect
@@ -342,27 +341,43 @@ burn) {
 //     console.log("Mob Hp Difference:_", mobHpDiff);
 //   }
 }
-class melee {
-  constructor(name, dmg, effect, effectStr, status ) {
-    this.name=name;
-    this.dmg=dmg;
-    this.effect=effect;
-    this.effectStr=effectStr;
-    this.status=status; 
-    //equiped or not (true, false)
+
+class Loot {
+	constructor(name, value, chance,equipable, equiped) {
+		this.name = name;
+		this.value = value;
+		this.chance = chance;
+		this.equipable = equipable;
+		this.equiped = equipable ? equiped : false;
+	}
+}
+
+class Melee extends Loot {
+  constructor(name, dmg, chance, effect, effectStr, equipable, equiped) {
+		super();
+    this.name = name;
+    this.dmg = dmg;
+		this.chance = chance;
+    this.effect = effect;
+    this.effectStr = effectStr;
+		this.equipable = equipable;
+		this.equiped = equipable ? equiped : false;
   }
 }
 
-class armor {
-  constructor(name, res, effect, status) {
+class Armor extends Loot {
+  constructor(name, res, chance, effect, equipable, equiped) {
+		super();
     this.name=name;
     this.res=res;
+		this.chance = chance;
     this.effect=effect;
-    this.status=status;
+		this.equipable = equipable;
+		this.equiped = equipable ? equiped : false;
   }
 }
 
-class skill{
+class Skill{
   constructor(name, sCost, mCost, damage, effect, status) {
     this.name=name;
     this.sCost=sCost;
@@ -377,39 +392,65 @@ class skill{
   }
 }
 
-class rune {
+class Rune {
   constructor(name, skill, damage, effect, status) {
     this.name=name;
     this.skill=skill;
+  }
+}
+
+class SpecialItem {
+  constructor(name, value, chance, effect) {
+    this.name = name;
+		this.value = value;
+		this.chance = chance;
+		this.effect = effect;
   }
 }
 //-----------------------------------------------------------------
 
 
 //melee weapons
-const woodClub = new melee('Wood club', 7.5, null, null, false);
+const woodClub = new Melee('Wood club', 7.5, 100, null, null, false);
 
-const rustySpike = new melee('Really rusty spike', 5, 'poison', 5, false);
+const rustySpike = new Melee('Really rusty spike', 5, 100, 'poison', 5, false);
 
-const knife = new melee('Knife', 10, null, null, true);
+const knife = new Melee('Knife', 10, 100, null, null, true);
 
-const longSword = new melee('Long Sword', 20, null, null, true);
+const longSword = new Melee('Long Sword', 20, 100, null, null, true);
 
-const adminSword = new melee('God sword', 1000, null, null, false);
+const adminSword = new Melee('God sword', 1000, 100, null, null, false);
 
-const BFS = new melee('Big Friendly Sword', 25, null, null, false);
+const BFS = new Melee('Big Friendly Sword', 25, 100, null, null, false);
 
-const clawClamore = new melee("Claw Claymore", 30, null, null, false);
+const clawClaymore = new Melee("Claw Claymore", 30, 100, null, null, false);
 
-const fireSword = new melee('Fire Sword', 20, 'burn', 5, false);
+const fireSword = new Melee('Fire Sword', 20, 100, 'burn', 5, false);
 
 //ARMOR
-const leatherArmor = new armor('Leather Armor', 5, null, false);
-const chainmail = new armor('Chainmail', 10, null, false);
-const darkCoat = new armor('Dark Coat', 30, 'dark', false)
+const leatherArmor = new Armor('Leather Armor', 5, 100, null, false);
+const chainmail = new Armor('Chainmail', 10, 100, null, false);
+const darkCoat = new Armor('Dark Coat', 30, 100, 'dark', false)
+
+//SPECIAL ITEMS
+const mysteriousRing = new SpecialItem("Mysterious Ring", 10, 100, null);
+
+const potionOfBigening = new SpecialItem("Potion of BIG-ENING", 10, 100, null);
+
+const slimeBall = new SpecialItem("Slime ball", 10, 100, null);
+
+const bone = new SpecialItem("Bone", 10,  100, null);
+
+const essence = new SpecialItem("Essence", 10,  100, null);
+
+const goblinEars = new SpecialItem("Goblin Ears", 10,  100, null);
+
+const cursedBones = new SpecialItem("Cursed Bones", 10,  100, null);
+
+const expensiveFood = new SpecialItem("Expensive Food", 10,  100, null);
 
 //player
-const player = new user(
+const player = new User(
   "PLAYER",
   100, //Hp
   100, //maxHp (Value to reset to)
@@ -432,56 +473,46 @@ const player = new user(
 //---------------------------------------------
 //MOBS
   //theif
-const thief = new mob('Theif', 100, 5, [
-  ['Knife', 100],
-  ['Mysterious Ring', 100],
-  ['Potion of BIG-ENING', 100],
-], 100, null, null, 10, 100)
+const thief = new Mob('Theif', 100, 5, [knife, mysteriousRing, potionOfBigening], 10, 100, null, null, 10, 100)
 
   //SLIME
-const slime = new mob('Slime', 200, 2.5, [
-  ['Slime ball', 100], 
-  ['Chainmail', 100],
-], 100, 'poison', 2, 10, 5);
+const slime = new Mob('Slime', 200, 2.5, [slimeBall, chainmail], 10, 100, 'poison', 2, 10, 5);
 
   //SKELETON
-const skeleton = new mob('Skeleton', 100, 10, [
-  ['Bone', 100],
-  ['Long Sword', 100]
-], 100, null, null, 10, 20);
+const skeleton = new Mob('Skeleton', 100, 10, [bone,longSword], 10, 100, null, null, 10, 20);
 
   //FIRESPIRIT
-const fireSpirit = new mob('Fire Spirit',50, 15, [
-  ['Essence', 100],
-], 100, 'burn', 2, 25, 5);
+const fireSpirit = new Mob('Fire Spirit',50, 15, [
+  essence,
+], 10, 100, 'burn', 2, 25, 5);
 
   //GOBLIN
-const goblin = new mob('Goblin', 75, 10, [
-  ['Leather Armor', 100],
-  ['Goblin Ears', 100],
-], 100, null, null, 10, 20);
+const goblin = new Mob('Goblin', 75, 10, [
+  leatherArmor,
+  goblinEars,
+], 10, 100, null, null, 10, 20);
 
 //BOSSES
-const skeletonBoss = new mob('Skeleton King', 350, 20, [
-  ['Big Friendly Sword', 100],
-  ['Cursed bones', 100],
-  ['Dark Coat', 100],
-], 100, null, null, 10, 35);
+const skeletonBoss = new Mob('Skeleton King', 350, 20, [
+  BFS,
+  cursedBones,
+  darkCoat,
+], 25, 100, null, null, 10, 35);
 
-const crab = new mob('CRAB?', 1, 1000, [
-  ['Claw Claymore',100],
-  ['Expensive Food', 100],
+const crab = new Mob('CRAB?', 1, 1000, [
+  clawClaymore,
+  expensiveFood, 10, 100, null, null, 10, 20
 ]);
 //----------------------------------------------
 //RUNES
 
   //skillname, effect, damage, effectStr
-const fireRune = new rune('Fire Rune', [
+const fireRune = new Rune('Fire Rune', [
   ['Fire Ball', 'burn', 10, 2, false],
 ]);
 
 //SKILLS
-const execute = new skill('Execute', 20, null, 'effect', false);
+const execute = new Skill('Execute', 20, null, 'effect', false);
 
 //Skill logic
 function executeEffect() {
@@ -496,15 +527,15 @@ function executeEffect() {
 //FLOORS
 
 let floors = new Array();
-floors.push(new floor('Floor 1', 
+floors.push(new Floor('Floor 1', 
 [slime, thief], 3 ));
-floors.push(new floor('Floor 2', 
+floors.push(new Floor('Floor 2', 
 [slime, thief, skeleton], 4));
-floors.push(new floor('Floor 3', 
+floors.push(new Floor('Floor 3', 
 [slime, thief, skeleton, fireSpirit], 5));
-floors.push(new floor('Floor 4', 
+floors.push(new Floor('Floor 4', 
 [null], 0));
-floors.push(new floor('Floor 5', 
+floors.push(new Floor('Floor 5', 
 [skeletonBoss], 1));
 // const _1 = new floor('Floor 1', [slime, thief], 0);
 // const _2 = new floor('Floor 2',   
@@ -540,8 +571,8 @@ if (adminSword.status) {
 if (BFS.status) {
   player.dmg = knife.dmg;
 }
-if (clawClamore.staus) {
-  player.dmg = clawClamore.dmg;
+if (clawClaymore.staus) {
+  player.dmg = clawClaymore.dmg;
 }
 if (fireSword.status) {
   player.dmg = fireSword.dmg;
